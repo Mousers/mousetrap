@@ -33,6 +33,7 @@ License: GPL v2.0 (see LICENSE)
 ### Using `autotools`
 
     cd mousetrap
+    # To force python3: PYTHON=$(which python3)
     ./autogen.sh # On Fedora, add --prefix=/usr
     make
     sudo make install
