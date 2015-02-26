@@ -39,7 +39,15 @@ License: GPL v2.0 (see LICENSE)
     ./autogen.sh # On Fedora, add --prefix=/usr
     make
     sudo make install
+    make clean
 
+## Uninstalling
+
+    When uninstalling, make sure that you are in the Mousetrap folder that you used to install Mousetrap.
+
+### Using 'autotools'
+
+    sudo make uninstall
 
 ## Running
 
