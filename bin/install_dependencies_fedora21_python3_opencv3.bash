@@ -1,21 +1,28 @@
 #!/bin/bash
 # Run this script to install the dependencies for Mousetrap on Fedora 21.
-# Must give a target path as an argument to download OpenCV to.
+
+set -e
+
+# Used with commands that may fail if we don't mind if they fail.
+ignore_failure() {
+	return 0
+}
 
 
-if [ -n "$1" ]; then
-	targetdir=$1
-else
-	echo "No target path for OpenCV specified"
+if [ ! -e README.md -o ! -e configure.ac ] ; then 
+	echo "Please run from the project root"
 	exit 1
 fi
 
+if [ ! -d vendor ] ; then
+	mkdir vendor
+fi
 
 sudo yum -y install cmake python3 python3-devel python3-numpy gcc gcc-c++ python3-PyYAML.x86_64 gnome-common python3-setuptools
 sudo pip3 install numpy
-sudo rpm -ivh http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo/fedora-21-x86_64/python3-xlib-0.15git20141113-1.fc21/python3-xlib-0.15git20141113-1.fc21.noarch.rpm
+sudo rpm -ivh http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo/fedora-21-x86_64/python3-xlib-0.15git20141113-1.fc21/python3-xlib-0.15git20141113-1.fc21.noarch.rpm || ignore_failure
 
-cd $targetdir
+cd vendor
 git clone --branch 3.0.0-alpha --depth 1 https://github.com/Itseez/opencv.git
 cd opencv
 git checkout 3.0.0-alpha
