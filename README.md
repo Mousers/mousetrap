@@ -11,6 +11,8 @@ License: GPL v2.0 (see LICENSE)
 * OpenCV 2
 * Python-Xlib 0.12+
 
+## Install Dependencies for Fedora21, Python3
+using install_dependencies_fedora21_python3
 
 ## Download
 
