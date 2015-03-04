@@ -11,8 +11,14 @@ License: GPL v2.0 (see LICENSE)
 * OpenCV 2
 * Python-Xlib 0.12+
 
-## Install Dependencies for Fedora21, Python3
-using install_dependencies_fedora21_python3
+## Install Dependencies for Fedora21, Python3, OpenCV3
+Uses script install_dependencies_fedora21_python3_opencv3.bash
+to install the mousetrap dependencies for Fedora21, Python3 and OpenCV3.
+* Using terminal, navigate to the mousetrap folder.
+* Enter the following command in the terminal:
+  ./bin/install_dependencies_fedora21_python3_opencv3.bash
+* This will begin the installation process of the dependencies. Let this
+  run until it finishes
 
 ## Download
 
