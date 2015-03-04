@@ -9,7 +9,6 @@ All things image manipulation.
 import cv2
 from gi.repository import GdkPixbuf
 
-
 _GDK_PIXBUF_BIT_PER_SAMPLE = 8
 
 
@@ -43,13 +42,21 @@ class Image(object):
 def _cv_rgb_to_cv_grayscale(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
+def _return_image():
+    return self._image_cv
 
 def _cvimage_to_pixbuf(cvimage):
+
+    # Convert cvimage's colorspace from RGB to BGR for correct color display
+    #AFewGoodMen    
+    cvimage = cv2.cvtColor(cvimage, cv2.COLOR_RGB2BGR)
+
     data = cvimage.tostring()
     colorspace = GdkPixbuf.Colorspace.RGB
     has_alpha_channel = False
     width = cvimage.shape[1]
     height = cvimage.shape[0]
+
 
     # dist in bytes between row starts
     row_stride = cvimage.strides[0]
