@@ -18,10 +18,16 @@ if [ ! -d vendor ] ; then
 	mkdir vendor
 fi
 
+#python 3; yaml; gnome common; python3 setup-tools
 sudo yum -y install cmake python3 python3-devel python3-numpy gcc gcc-c++ python3-PyYAML.x86_64 gnome-common python3-setuptools
+
+#installation of numpy
 sudo pip3 install numpy
+
+#installation of x-lib python library
 sudo rpm -ivh http://copr-be.cloud.fedoraproject.org/results/mosquito/myrepo/fedora-21-x86_64/python3-xlib-0.15git20141113-1.fc21/python3-xlib-0.15git20141113-1.fc21.noarch.rpm || ignore_failure
 
+#install openCV 3
 cd vendor
 git clone --branch 3.0.0-alpha --depth 1 https://github.com/Itseez/opencv.git
 cd opencv

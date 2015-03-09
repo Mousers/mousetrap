@@ -6,10 +6,13 @@ License: GPL v2.0 (see LICENSE)
 ## Software Requirements
 
 * Linux (developed on Fedora 20 and Ubuntu)
-* Python 2.7
+* Python 3
 * PyYAML 3
-* OpenCV 2
+* OpenCV 3
 * Python-Xlib 0.12+
+* Gnome Common
+* Python setup-tools
+* Numpy
 
 ## Install Dependencies for Fedora21, Python3, OpenCV3
 Uses script bin/install_dependencies_fedora21_python3_opencv3.bash
