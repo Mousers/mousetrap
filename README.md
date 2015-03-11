@@ -39,7 +39,6 @@ License: GPL v2.0 (see LICENSE)
     ./autogen.sh # On Fedora, add --prefix=/usr
     make
     sudo make install
-    make clean
 
 ## Uninstalling
 
@@ -47,6 +46,7 @@ License: GPL v2.0 (see LICENSE)
 
 ### Using 'autotools'
 
+    make clean
     sudo make uninstall
 
 ## Running
