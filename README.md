@@ -46,7 +46,6 @@ License: GPL v2.0 (see LICENSE)
 
 ### Using 'autotools'
 
-    make clean
     sudo make uninstall
 
 ## Running
