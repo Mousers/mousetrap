@@ -6,9 +6,9 @@ License: GPL v2.0 (see LICENSE)
 ## Software Requirements
 
 * Linux (developed on Fedora 20 and Ubuntu)
-* Python 3
+* Python 2.7+
 * PyYAML 3
-* OpenCV 3
+* OpenCV 2+
 * Python-Xlib 0.12+
 * Gnome Common
 * Python setup-tools
