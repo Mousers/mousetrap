@@ -1,7 +1,6 @@
 #Class conversions for the Point and PointBuffer
 #segments of Adam Devigili's Processsing iControl code.
 
-#CODE MAY CONTAIN ERRORS AS OF 3/14/15 AS IT IS NOT FULLY TESTABLE!
 
 class Point:
 
@@ -11,30 +10,23 @@ class Point:
 
 class PointBuffer:
 
-    def __init__(self, size, numElements):
-        #If size = 0, the program will error out (as per the original code).
-        #Contemplate extra logic or exception handling after conversion complete.
-        #See addPoint method for why.
+    def __init__(self, size):
+        if size < 1:
+            raise Exception("Size can't be less than 1")
+        
         self.size = size
         self.points = []
         self.numElements = 0
 
     def getSize(self):
-        pointsSize = len(self.points)
-        return pointsSize
+        return self.numElements
 
     def addPoint(self, pointP):
         if (self.numElements == self.size):
-            
-            for i in range(self.size - 1):
-                self.points[i] = self.points[i + 1];
-                #If the list is length 0, i and i+1 are not valid and will
-                #cause the program to crash.
-                
-            self.points[size - 1] = pointP
-
+            self.points.pop(0)
+            self.points.append(pointP)
         else:
-            self.points[self.numElements] = pointP
+            self.points.append(pointP)
             self.numElements += 1
 
     def average(self):
@@ -42,29 +34,49 @@ class PointBuffer:
         averageY = 0
         
         for point in self.points:
-            if point != None:
-                averageX += point.x
-                averageY += point.y
+            averageX += point.x
+            averageY += point.y
 
-        averageX /= self.numElements
-        averageY /= self.numElements
+        averageX //= self.numElements
+        averageY //= self.numElements
 
-        averagePoint = Point(averageX, averageY)
+        return Point(averageX, averageY)
+    
 
-        return averagePoint
-
-    def printBuffer()
-        outputstring = ''
+    def printBuffer(self):
+        outputstring = '['
         for point in self.points:
             if point != None:
                 outputstring += '(' + str(point.x) + ', ' + str(point.y) + '),'
 
-        if len(outputstring > 0):   #Better output formatting; removes extra ','
+        if len(outputstring) > 1:   #Better output formatting; removes extra ','
             outputstring = outputstring[:-1]
             
         outputstring += ']'
         print(outputstring)
-        
 
 
-            
+
+####################  TESTS  ####################
+
+def main():
+    pb = PointBuffer(5)
+    print(pb.getSize()) # should print: 0
+    pb.printBuffer()    # should print: []
+    pb.addPoint(Point(100, 100))
+    pb.addPoint(Point(50, 150))
+    print(pb.getSize()) # should print: 2
+    pb.addPoint(Point(200, 50))
+    pb.addPoint(Point(300, 300))
+    pb.addPoint(Point(0, 50))
+    pb.printBuffer()    # should print: [(100, 100),(50, 150),(200, 50),(300, 300),(0, 50)]
+    pb.addPoint(Point(250, 200))
+    pb.printBuffer()    # should print: [(50, 150),(200, 50),(300, 300),(0, 50),(250, 200)]
+    print(pb.getSize()) # should print: 5
+
+    average = pb.average()
+    print('average is (' + str(average.x) + ', ' + str(average.y) + ')') # should print: average is (160, 150)
+    
+
+main()
+
