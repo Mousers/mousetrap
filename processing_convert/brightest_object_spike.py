@@ -1,6 +1,9 @@
-#Class conversions for the Point and PointBuffer
-#segments of Adam Devigili's Processsing iControl code.
+#conversion for Adam Devigili's Processsing iControl code.
+import cv2
 
+#for image capturing
+capture = cv2.VideoCapture(0)
+image = None
 
 class Point:
 
@@ -55,6 +58,11 @@ class PointBuffer:
         outputstring += ']'
         print(outputstring)
 
+def captureEvent():
+    ret, image = capture.read()
+    return image
+	
+
 
 
 ####################  TESTS  ####################
@@ -76,6 +84,9 @@ def main():
 
     average = pb.average()
     print('average is (' + str(average.x) + ', ' + str(average.y) + ')') # should print: average is (160, 150)
+
+    image = captureEvent()
+    cv2.imwrite("test.png", image)
     
 
 main()
