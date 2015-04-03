@@ -45,6 +45,7 @@ def _cv_rgb_to_cv_grayscale(image):
 
 
 def _cvimage_to_pixbuf(cvimage):
+    cvimage = cv2.cvtColor(cvimage, cv2.COLOR_RGB2BGR)
     data = cvimage.tostring()
     colorspace = GdkPixbuf.Colorspace.RGB
     has_alpha_channel = False
