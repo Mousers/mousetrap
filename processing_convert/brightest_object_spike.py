@@ -1,9 +1,108 @@
 #conversion for Adam Devigili's Processsing iControl code.
 import cv2
+from Xlib.display import Display as XlibDisplay
+from Xlib.ext import xtest
+from Xlib import X
 
-#for image capturing
-capture = cv2.VideoCapture(0)
+
+capture = None
 image = None
+points = None
+pointer = None
+
+
+
+def setup():
+    global capture
+    global image
+    global points
+    global pointer
+    
+    capture = cv2.VideoCapture(0)
+    points = PointBuffer(7)
+    pointer = Pointer()
+    pointer.set_position(position=(get_screen_width()/2, get_screen_height()/2))
+
+    location = pointer.get_position()
+    points.addPoint(Point(location[0], location[1]))
+
+    ###################
+    # start loop here
+    ###################
+
+
+
+def get_screen_width():
+    return get_gtk().Window().get_screen().get_width()
+
+def get_screen_height():
+    return get_gtk().Window().get_screen().get_height()
+
+# gtk can be patch with a Mock during testing without ever importing Gtk
+# from gi.repository. This is necessary since importing Gtk from gi.repository
+# on a headless system raises an error.
+gtk = None
+
+
+def get_gtk():
+    global gtk
+
+    if gtk is None:
+        from gi.repository import Gtk
+        gtk = Gtk
+
+    return gtk
+
+# gdk can be patch with a Mock during testing without ever importing Gdk
+# from gi.repository. This is necessary since importing Gdk from gi.repository
+# on a headless system raises an error.
+gdk = None
+
+
+def get_gdk():
+    global gdk
+
+    if gdk is None:
+        from gi.repository import Gdk
+        gdk = Gdk
+
+    return gdk
+
+class Pointer(object):
+    BUTTON_LEFT = X.Button1
+
+    def __init__(self):
+        gdk_display = get_gdk().Display.get_default()
+        device_manager = gdk_display.get_device_manager()
+        self._pointer = device_manager.get_client_pointer()
+        self._screen = gdk_display.get_default_screen()
+        self._moved = False
+
+    def set_position(self, position=None):
+        '''Move pointer to position (x, y). If position is None,
+        no change is made.'''
+        self._moved = False
+        if position is not None:
+            self._pointer.warp(self._screen, position[0], position[1])
+            self._moved = True
+
+    def is_moving(self):
+        '''Returns True if last call to set_position passed a non-None value
+        for position.'''
+        return self._moved
+
+    def get_position(self):
+        x_index = 1
+        y_index = 2
+        position = self._pointer.get_position()
+        return (position[x_index], position[y_index])
+
+    def click(self, button=BUTTON_LEFT):
+        display = XlibDisplay()
+        for event, button in \
+                [(X.ButtonPress, button), (X.ButtonRelease, button)]:
+            xtest.fake_input(display, event, button)
+            display.sync()
 
 class Point:
 
@@ -85,9 +184,24 @@ def main():
     average = pb.average()
     print('average is (' + str(average.x) + ', ' + str(average.y) + ')') # should print: average is (160, 150)
 
-    image = captureEvent()
-    cv2.imwrite("test.png", image)
-    
+    #image = captureEvent()
+    #cv2.imwrite("test.png", image)
+
+
+    setup()
+    points.printBuffer()
 
 main()
 
+
+
+# minor test for finding brightest object point
+
+#capture = cv2.VideoCapture(0)
+#image = captureEvent()
+#cv2.imwrite("test.png", image)
+#orig = image.copy()
+#gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#(minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(gray)
+#cv2.circle(image, maxLoc, 5, (255, 0, 0), 2)
+#cv2.imwrite("test2.png", image)
