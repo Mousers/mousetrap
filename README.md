@@ -169,7 +169,7 @@ class MyPlugin(interface.Plugin):
 ```
 
 ### 2. Edit configuration file to tell MouseTrap about your plugin.
-(This is also an example of how to enable any plugin: just add your plugin path underneath ```assembly:```.)
+This is also an example of how to enable any plugin: just add your plugin path underneath ```assembly:```. For more information on importing modules, visit [this documentation](https://docs.python.org/3.4/tutorial/modules.html#the-module-search-path).
 
 ```yaml
 #~/.mousetrap.yaml
