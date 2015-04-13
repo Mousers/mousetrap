@@ -28,6 +28,8 @@ camera:
 classes:
   mousetrap.plugins.display.DisplayPlugin:
     window_title: MouseTrap
+  mousetrap.plugins.test.Test:
+    data: hello world
   mousetrap.plugins.eyes.ClosedDetector:
     max_samples: 15
     min_fraction_to_be_closed: 0.8
