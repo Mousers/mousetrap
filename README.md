@@ -105,6 +105,25 @@ Dump built-in annotated configuration.
 
 Use `src/mousetrap/locale/_language_/LC_MESSAGES/mousetrap.po` as your template (POT file).
 
+## Plugin Information
+
+There are currently 5 different plugins.
+
+*  Camera
+*  Display
+*  Nose
+*  Eyes
+*  Vision
+
+The camera plugin is responsible for loading in the webcam so that it can read the user's image.
+
+The display plugin is responsible for writing the user's image onto the screen so that the user can see their own image.
+
+The nose plugin is responsible for detecting the user's nose and uses the user's nose as a point to detect movement.
+
+The eyes plugin is responsible for detecting the user's eyes. It detects motion of the eyes, checks whether or not an eye has been closed and has a class to detect the user's left eye.
+
+The vision plugin corresponds with OpenCV which also loads in the haar files, the camera, and the feature detectors.
 
 ## Writing a Plugin
 
@@ -150,6 +169,7 @@ class MyPlugin(interface.Plugin):
 ```
 
 ### 2. Edit configuration file to tell MouseTrap about your plugin.
+(This is also an example of how to enable any plugin: just add your plugin path underneath ```assembly:```.)
 
 ```yaml
 #~/.mousetrap.yaml
@@ -163,6 +183,8 @@ classes:
   python.path.to.MyPlugin:
     x: hi
 ```
+
+To disable a plugin, either comment out, or delete, the corresponding line underneath ```assembly:```.
 
 For more examples, see the plugins in `src/mousetrap/plugins`.
 
