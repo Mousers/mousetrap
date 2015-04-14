@@ -51,6 +51,7 @@ classes:
       scale_factor: 1.1
   mousetrap.plugins.nose.NoseJoystickPlugin:
     threshold: 5
+    speed: 0.3
 
 # haar_files - A mapping of haar cascade files. Relative paths are relative
 #              to the mousetrap package directory. Plugins, if they come with

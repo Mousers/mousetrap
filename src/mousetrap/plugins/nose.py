@@ -45,6 +45,7 @@ class NoseJoystickPlugin(interface.Plugin):
     def __init__(self, config):
         self._config = config
         self._threshold = config[self]['threshold']
+        self._speed = config[self]['speed']
         self._nose_locator = NoseLocator(config)
         self._initial_image_location = (0, 0)
         self._last_delta = (0, 0)
@@ -68,8 +69,8 @@ class NoseJoystickPlugin(interface.Plugin):
         if delta_x == 0 and delta_y == 0:
             return None
 
-        point_x += delta_x
-        point_y += delta_y
+        point_x += self._speed * delta_x
+        point_y += self._speed * delta_y
 
         return (point_x, point_y)
 
