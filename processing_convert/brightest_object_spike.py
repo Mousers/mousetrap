@@ -13,24 +13,55 @@ pointer = None
 
 
 def setup():
-    global capture
-    global image
-    global points
-    global pointer
-    
-    capture = cv2.VideoCapture(0)
-    points = PointBuffer(7)
-    pointer = Pointer()
-    pointer.set_position(position=(get_screen_width()/2, get_screen_height()/2))
+	global capture
+	global image
+	global points
+	global pointer
 
-    location = pointer.get_position()
-    points.addPoint(Point(location[0], location[1]))
+	capture = cv2.VideoCapture(0)
+	points = PointBuffer(7)
+	pointer = Pointer()
+	pointer.set_position(position=(get_screen_width()/2, get_screen_height()/2))
+	location = pointer.get_position()
 
-    ###################
-    # start loop here
-    ###################
+	points.addPoint(Point(location[0], location[1]))
 
+	draw()
+	
 
+def draw(): 
+	global capture
+	global image
+	global points
+	global pointer
+
+	displayWidth, height = getScreenSize()
+
+	flag = 1
+	while (flag == 1):
+
+		#scale(2) do we need this?
+
+		
+		image = captureEvent()		
+		#cv2.loadImage(image)
+
+		gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+		(minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(gray)
+		
+
+		#clickCooldown = clickCooldown+1
+
+		#loc = opencv.max()
+
+		newPoint = Point(abs(int(maxLoc[0])), int(maxLoc[1]))
+			#dependent on how the new Point class is written
+
+		points.addPoint(newPoint)    #dependent on how the new PointBuffer class is written
+
+		nextMove = points.average()         #dependent on how the new PointBuffer class is written
+
+		pointer.set_position((nextMove.x, nextMove.y))
 
 def get_screen_width():
     return get_gtk().Window().get_screen().get_width()
@@ -67,6 +98,11 @@ def get_gdk():
         gdk = Gdk
 
     return gdk
+
+def getScreenSize():
+	window = get_gtk().Window()
+	screen = window.get_screen()
+	return (screen.get_width(), screen.get_height())
 
 class Pointer(object):
     BUTTON_LEFT = X.Button1
@@ -158,8 +194,9 @@ class PointBuffer:
         print(outputstring)
 
 def captureEvent():
-    ret, image = capture.read()
-    return image
+	global capture
+	ret, image = capture.read()
+	return image
 	
 
 
@@ -182,14 +219,17 @@ def main():
     print(pb.getSize()) # should print: 5
 
     average = pb.average()
-    print('average is (' + str(average.x) + ', ' + str(average.y) + ')') # should print: average is (160, 150)
+    print('average is (' + str(average.x) + ', ' + str(average.y) + ')')
+	
+	# should print: average is (160, 150)
 
     #image = captureEvent()
     #cv2.imwrite("test.png", image)
 
 
     setup()
-    points.printBuffer()
+    #points.printBuffer()
+	
 
 main()
 
