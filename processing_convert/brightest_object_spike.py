@@ -4,7 +4,6 @@ from Xlib.display import Display as XlibDisplay
 from Xlib.ext import xtest
 from Xlib import X
 
-
 capture = None
 image = None
 points = None
@@ -22,6 +21,9 @@ def setup():
 	points = PointBuffer(7)
 	pointer = Pointer()
 	pointer.set_position(position=(get_screen_width()/2, get_screen_height()/2))
+	
+	
+    
 	location = pointer.get_position()
 
 	points.addPoint(Point(location[0], location[1]))
@@ -42,26 +44,32 @@ def draw():
 
 		#scale(2) do we need this?
 
-		
 		image = captureEvent()		
 		#cv2.loadImage(image)
 
 		gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+		
 		(minVal, maxVal, minLoc, maxLoc) = cv2.minMaxLoc(gray)
 		
 
 		#clickCooldown = clickCooldown+1
 
 		#loc = opencv.max()
-
-		newPoint = Point(abs(int(maxLoc[0])), int(maxLoc[1]))
+		
+		#print(2*maxLoc[0])
+		
+		
+		newPoint = Point(displayWidth - abs(int(2*maxLoc[0])), int(2*maxLoc[1]))
 			#dependent on how the new Point class is written
-
+		
 		points.addPoint(newPoint)    #dependent on how the new PointBuffer class is written
 
 		nextMove = points.average()         #dependent on how the new PointBuffer class is written
 
 		pointer.set_position((nextMove.x, nextMove.y))
+		#calling this function is the only way i could find to update the pointer
+		pointer.get_position()
+		
 
 def get_screen_width():
     return get_gtk().Window().get_screen().get_width()
@@ -119,8 +127,9 @@ class Pointer(object):
         no change is made.'''
         self._moved = False
         if position is not None:
-            self._pointer.warp(self._screen, position[0], position[1])
-            self._moved = True
+        	#print(position[0], position[1])
+        	self._pointer.warp(self._screen, position[0], position[1])
+        	self._moved = True
 
     def is_moving(self):
         '''Returns True if last call to set_position passed a non-None value
@@ -228,7 +237,6 @@ def main():
 
 
     setup()
-    #points.printBuffer()
 	
 
 main()
